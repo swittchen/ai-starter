@@ -31,7 +31,16 @@ fi
 goal_is_template() { grep -q 'ai-starter:unset' "$GOAL" 2>/dev/null; }
 
 # First non-empty line under a "## heading" in a file.
-section() { awk -v h="## $2" '$0==h{f=1;next} f&&/^## /{exit} f&&NF{print;exit}' "$1" 2>/dev/null; }
+# Pure bash on purpose: macOS awk fails to match non-ASCII (Cyrillic) headings.
+section() {
+  [ -f "$1" ] || return 0
+  local l f=0
+  while IFS= read -r l || [ -n "$l" ]; do
+    l="${l%$'\r'}"
+    if [ "$f" = 0 ]; then [ "$l" = "## $2" ] && f=1; continue; fi
+    case "$l" in "## "*) return 0;; *[![:space:]]*) printf '%s\n' "$l"; return 0;; esac
+  done < "$1"
+}
 
 # How many project files changed after the last /save (= newer than ai/STATE.md).
 # In git repos: modified + untracked files from git (respects .gitignore, so builds/deps don't count).
