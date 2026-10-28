@@ -1,0 +1,6 @@
+# LOG — session log (append only)
+
+## YYYY-MM-DD · session 1
+- Done:
+- Decisions: D-…
+- Knowledge: wiki/…

@@ -1,0 +1,3 @@
+ai/sessions/
+.claude/settings.local.json
+.claude/.dirty-since

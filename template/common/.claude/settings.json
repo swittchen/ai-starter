@@ -1,0 +1,33 @@
+{
+  "autoMemoryEnabled": false,
+  "autoCompactWindow": 300000,
+  "permissions": {
+    "deny": [
+      "Edit(/ai/GOAL.md)",
+      "Edit(/ai/raw/**)",
+      "Bash(mv * ai/GOAL.md)",
+      "Bash(cp * ai/GOAL.md)",
+      "Bash(rm ai/GOAL.md)",
+      "Bash(rm -rf ai/raw*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git add*)",
+      "Bash(git reset*)",
+      "Bash(git checkout*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"" } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/goal-anchor.sh\"" } ] }
+    ],
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/stop-check.sh\"" } ] }
+    ],
+    "PreCompact": [
+      { "hooks": [ { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/backup-transcript.sh\"" } ] }
+    ]
+  }
+}
