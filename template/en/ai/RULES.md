@@ -1,4 +1,4 @@
-# How to work in this project (ai-starter)
+# How to work in this project (claude-project-memory)
 
 You remember nothing between sessions. **Your memory is only the files in `ai/` plus git history.** If it is not there, you do not know it.
 The goal (ai/GOAL.md), state (ai/STATE.md) and plan (ai/PLAN.md) are already loaded into your context.
@@ -25,7 +25,7 @@ The goal (ai/GOAL.md), state (ai/STATE.md) and plan (ai/PLAN.md) are already loa
 **Work in tasks.** A task fits into one session. Take the next open task of the active milestone in ai/PLAN.md. If it turns out bigger, split it first (/breakdown), then do the first part.
 
 **Course check.** Before a task, name the milestone M and the criterion K it moves. None? Stop and ask. Interesting but "not now" → one line in ai/BACKLOG.md, then back to the task.
-(While ai/GOAL.md carries the `ai-starter:unset` marker, the only task is /kickoff.)
+(While ai/GOAL.md carries the `project-memory:unset` marker, the only task is /kickoff.)
 
 **Decisions.** Check "Active decisions" in STATE and `grep` ai/DECISIONS.md. Never silently revisit a decision: write a new D-NNN entry with the reason.
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# ai-starter: shared helpers for all hooks / общие функции хуков.
+# claude-project-memory: shared helpers for all hooks / общие функции хуков.
 cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
 STATE=ai/STATE.md
 GOAL=ai/GOAL.md
-AI_LANG=$(cat .claude/ai-starter-lang 2>/dev/null || echo en)
+AI_LANG=$(cat .claude/project-memory-lang 2>/dev/null || cat .claude/ai-starter-lang 2>/dev/null || echo en)
 
 if [ "$AI_LANG" = "ru" ]; then
   H_GOAL="Цель одной фразой"; H_MS="Текущая веха"; H_TASK="Текущая задача"
@@ -27,8 +27,8 @@ else
   M_STOP="ai/STATE.md lags behind the work: %s changed files are not reflected in it. Run /save, then finish."
 fi
 
-# The template GOAL.md carries this marker; the real goal written by /kickoff does not.
-goal_is_template() { grep -q 'ai-starter:unset' "$GOAL" 2>/dev/null; }
+# The template GOAL.md carries this marker; the real goal written by /kickoff does not. ("ai-starter" = name before 1.1.0.)
+goal_is_template() { grep -qE '(project-memory|ai-starter):unset' "$GOAL" 2>/dev/null; }
 
 # First non-empty line under a "## heading" in a file.
 # Pure bash on purpose: macOS awk fails to match non-ASCII (Cyrillic) headings.

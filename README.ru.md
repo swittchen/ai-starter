@@ -1,9 +1,16 @@
-# ai-starter
+# claude-project-memory
+
+[![smoke-test](https://github.com/swittchen/claude-project-memory/actions/workflows/test.yml/badge.svg)](https://github.com/swittchen/claude-project-memory/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-hooks%20%2B%20skills-ff8a3d)
+![Platforms](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL-lightgrey)
 
 **Память проекта для [Claude Code](https://docs.claude.com/en/docs/claude-code/overview).**
 Открываешь новую сессию в папке проекта — а Claude уже знает цель, где вы остановились и что делать дальше.
 
 [English version → README.md](README.md)
+
+![Демо: Claude стартует с целью, состоянием и следующим шагом, делает одну задачу, /save предлагает коммит](docs/img/demo.gif)
 
 ---
 
@@ -15,7 +22,7 @@ Claude Code — как очень умный помощник с амнезие�
 - **Шаг за шагом уплывает в сторону** от того, что вы хотели с самого начала.
 - **На большом проекте** (много кода, книга) легко потратить весь лимит, просто читая файлы.
 
-## Что делает ai-starter
+## Что делает claude-project-memory
 
 | Проблема | Решение |
 |---|---|
@@ -32,11 +39,11 @@ Claude Code — как очень умный помощник с амнезие�
 
 ```bash
 # 1. Скачать (один раз)
-git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
-echo "alias ai-starter='bash ~/tools/ai-starter/install.sh'" >> ~/.bashrc && source ~/.bashrc
+git clone https://github.com/swittchen/claude-project-memory.git ~/tools/claude-project-memory
+echo "alias project-memory='bash ~/tools/claude-project-memory/install.sh'" >> ~/.bashrc && source ~/.bashrc
 
 # 2. Поставить в проект (новый или существующий — твоё ничего не затрётся)
-ai-starter ~/projects/moj-projekt --lang ru
+project-memory ~/projects/moj-projekt --lang ru
 
 # 3. Первая сессия
 cd ~/projects/moj-projekt && git init     # если это ещё не git-проект

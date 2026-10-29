@@ -1,10 +1,10 @@
 # <НАЗВАНИЕ ПРОЕКТА>
 
-<!-- ai-starter: begin -->
+<!-- project-memory: begin -->
 @ai/RULES.md
 @ai/GOAL.md
 @ai/STATE.md
 @ai/PLAN.md
-<!-- ai-starter: end -->
+<!-- project-memory: end -->
 
 <!-- Ниже — твои собственные правила проекта (стек, команды сборки, стиль кода/текста). -->

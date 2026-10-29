@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: First session of a project — interview to define the goal, done-criteria, milestones and first tasks. Use while ai/GOAL.md still carries the ai-starter:unset marker.
+description: First session of a project — interview to define the goal, done-criteria, milestones and first tasks. Use while ai/GOAL.md still carries the project-memory:unset marker.
 disable-model-invocation: true
 ---
 
@@ -16,7 +16,7 @@ disable-model-invocation: true
 5. Constraints: deadline, tech, budget.
 
 **Step 2 — files:**
-- Interview result → ai/GOAL.draft.md in the format of ai/GOAL.md, but WITHOUT the first marker line `ai-starter:unset` (you are not allowed to edit ai/GOAL.md itself).
+- Interview result → ai/GOAL.draft.md in the format of ai/GOAL.md, but WITHOUT the first marker line `project-memory:unset` (you are not allowed to edit ai/GOAL.md itself).
 - ai/PLAN.md: 3–7 milestones, each closes a criterion K; split the first milestone into tasks right away (rules in the /breakdown skill).
 - ai/MAP.md: structure of the future output, if not filled yet.
 - ai/LOG.md: entry "session 1 — kickoff".

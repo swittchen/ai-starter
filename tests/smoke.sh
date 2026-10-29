@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke test: installs ai-starter into temp projects (en + ru) and exercises every hook.
+# Smoke test: installs claude-project-memory into temp projects (en + ru) and exercises every hook.
 # No Claude Code and no tokens needed. Run: bash tests/smoke.sh
 set -u
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,7 +15,7 @@ for L in en ru; do
   P="$TMP/new-$L"; export CLAUDE_PROJECT_DIR="$P"
   bash "$ROOT/install.sh" "$P" --lang "$L" >/dev/null
   check "files installed" '[ -f "$P/ai/GOAL.md" ] && [ -f "$P/.claude/settings.json" ] && [ -f "$P/.claude/skills/save/SKILL.md" ]'
-  check "language stored" '[ "$(cat "$P/.claude/ai-starter-lang")" = "$L" ]'
+  check "language stored" '[ "$(cat "$P/.claude/project-memory-lang")" = "$L" ]'
   ( cd "$P" && git init -q && gitc add -A && gitc commit -qm init )
   H="$P/.claude/hooks"
 
@@ -61,14 +61,24 @@ P="$TMP/existing"; mkdir -p "$P/.claude"; export CLAUDE_PROJECT_DIR="$P"
 printf '# Mine\n' > "$P/CLAUDE.md"
 printf '{"permissions":{"deny":["Read(./.env)"]},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"echo mine"}]}]}}\n' > "$P/.claude/settings.json"
 bash "$ROOT/install.sh" "$P" >/dev/null; bash "$ROOT/install.sh" "$P" >/dev/null
-check "own CLAUDE.md kept + block appended once" 'grep -q "^# Mine" "$P/CLAUDE.md" && [ "$(grep -c "ai-starter: begin" "$P/CLAUDE.md")" -eq 1 ]'
+check "own CLAUDE.md kept + block appended once" 'grep -q "^# Mine" "$P/CLAUDE.md" && [ "$(grep -c "project-memory: begin" "$P/CLAUDE.md")" -eq 1 ]'
 check "own settings kept" 'grep -q "Read(./.env)" "$P/.claude/settings.json" && grep -q "echo mine" "$P/.claude/settings.json"'
 check "hooks merged once (idempotent)" '[ "$(grep -c "stop-check.sh" "$P/.claude/settings.json")" -eq 1 ]'
 check "settings still valid JSON" 'python3 -m json.tool "$P/.claude/settings.json" >/dev/null 2>&1 || python -m json.tool "$P/.claude/settings.json" >/dev/null'
 
+echo "== upgrade of a project installed under the old name (ai-starter)"
+P="$TMP/legacy"; mkdir -p "$P/.claude" "$P/ai"; export CLAUDE_PROJECT_DIR="$P"
+echo ru > "$P/.claude/ai-starter-lang"
+printf '# Old\n\n<!-- ai-starter: begin -->\n@ai/RULES.md\n<!-- ai-starter: end -->\n' > "$P/CLAUDE.md"
+bash "$ROOT/install.sh" "$P" --update >/dev/null
+check "legacy language kept and migrated" '[ "$(cat "$P/.claude/project-memory-lang")" = ru ] && [ ! -f "$P/.claude/ai-starter-lang" ]'
+check "legacy CLAUDE.md block not duplicated" '! grep -q "project-memory: begin" "$P/CLAUDE.md"'
+printf '<!-- ai-starter:unset -->\n# GOAL\n' > "$P/ai/GOAL.md"
+check "legacy goal marker still detected" '(source "$P/.claude/hooks/lib.sh"; goal_is_template)'
+
 echo "== install through a symlink (alias-style use)"
-ln -s "$ROOT/install.sh" "$TMP/ai-starter"
-check "symlinked installer works" 'bash "$TMP/ai-starter" "$TMP/via-link" >/dev/null && [ -f "$TMP/via-link/ai/RULES.md" ]'
+ln -s "$ROOT/install.sh" "$TMP/project-memory"
+check "symlinked installer works" 'bash "$TMP/project-memory" "$TMP/via-link" >/dev/null && [ -f "$TMP/via-link/ai/RULES.md" ]'
 
 echo
 if [ "$fails" -eq 0 ]; then echo "ALL TESTS PASSED"; else echo "$fails TEST(S) FAILED"; exit 1; fi

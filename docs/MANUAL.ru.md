@@ -1,9 +1,9 @@
-# ai-starter — мануал простыми словами
+# claude-project-memory — мануал простыми словами
 
 ## Что это такое, в двух словах
 
 Представь, что Claude — мастер, который каждое утро приходит на стройку **с полной потерей памяти**.
-ai-starter — это **тетрадь прораба**, которая лежит прямо на стройке:
+claude-project-memory — это **тетрадь прораба**, которая лежит прямо на стройке:
 - на первой странице — **что строим** (цель);
 - дальше — **где остановились вчера** и **что делать сегодня**;
 - отдельная полка — **справочник** со всем, что узнали по ходу.
@@ -29,13 +29,13 @@ python нужен только для одного случая (см. шаг 4)
 
 ---
 
-## Шаг 2. Скачать ai-starter (один раз на компьютер)
+## Шаг 2. Скачать claude-project-memory (один раз на компьютер)
 
 ```bash
-git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
+git clone https://github.com/swittchen/claude-project-memory.git ~/tools/claude-project-memory
 ```
 Это скачает шаблон в папку `tools` в твоей домашней папке. Значок `~` = твоя домашняя папка.
-Хочешь другое место — пиши свой путь, например `/data/имя/tools/ai-starter`.
+Хочешь другое место — пиши свой путь, например `/data/имя/tools/claude-project-memory`.
 
 ---
 
@@ -44,14 +44,14 @@ git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
 Чтобы не писать каждый раз длинный путь, заводим **alias** — это как ярлык на рабочем столе, только для терминала:
 
 ```bash
-echo "alias ai-starter='bash ~/tools/ai-starter/install.sh'" >> ~/.bashrc
+echo "alias project-memory='bash ~/tools/claude-project-memory/install.sh'" >> ~/.bashrc
 source ~/.bashrc
 ```
 - Первая строка дописывает ярлык в файл `~/.bashrc` — это файл, который терминал читает при каждом открытии.
 - Вторая — чтобы ярлык заработал прямо сейчас, без перезапуска терминала.
 
 Если в шаге 2 ты положил шаблон в другое место — поменяй путь в первой строке.
-Проверка: `ai-starter --help` должен показать подсказку.
+Проверка: `project-memory --help` должен показать подсказку.
 
 ---
 
@@ -59,7 +59,7 @@ source ~/.bashrc
 
 **Новый проект:**
 ```bash
-ai-starter ~/projects/moj-projekt --lang ru
+project-memory ~/projects/moj-projekt --lang ru
 cd ~/projects/moj-projekt
 git init
 ```
@@ -67,7 +67,7 @@ git init
 **Уже существующий проект (например, твой код):**
 ```bash
 cd ~/projects/lims-integration
-ai-starter . --lang ru
+project-memory . --lang ru
 ```
 Точка `.` значит «вот эта папка, где я сейчас».
 
@@ -172,7 +172,7 @@ Claude каждый раз читает только **цель, состоян�
 ## Для программистов
 
 - В карте `ai/MAP.md` — модули и пакеты, а не каждый файл.
-- Команды сборки и тестов допиши в корневой `CLAUDE.md` (ниже блока ai-starter). `/kickoff` предложит это сам.
+- Команды сборки и тестов допиши в корневой `CLAUDE.md` (ниже блока claude-project-memory). `/kickoff` предложит это сам.
 - «Как проверить, что готово» — это тесты. Задача готова, когда её тест зелёный.
 - Правила для одного модуля можно положить в `CLAUDE.md` прямо в папке модуля — Claude прочитает его, только когда работает там.
 - Подводные камни вроде «этот сервис отдаёт даты без часового пояса» — в `ai/wiki/`, чтобы не наступать на них каждую сессию.
@@ -203,6 +203,6 @@ Claude каждый раз читает только **цель, состоян�
 | Claude ругается на строку в `settings.json` | удали эту строку — её могли переименовать в новой версии Claude Code |
 | Слишком часто просит `/save` | открой `.claude/hooks/stop-check.sh` и увеличь `MINUTES=40` и `MAXFILES=15` |
 | Хочу поменять цель | `chmod u+w ai/GOAL.md` → поправь → `chmod a-w ai/GOAL.md` |
-| Вышла новая версия ai-starter | `cd ~/tools/ai-starter && git pull`, потом в проекте `ai-starter . --update` (тетрадь не тронется) |
+| Вышла новая версия claude-project-memory | `cd ~/tools/claude-project-memory && git pull`, потом в проекте `project-memory . --update` (тетрадь не тронется) |
 | Claude читает много файлов подряд | останови и скажи: «через MAP.md и поиск, не читай всё» |
 | Разговор стал медленным | `/save` → коммит → `/clear` |

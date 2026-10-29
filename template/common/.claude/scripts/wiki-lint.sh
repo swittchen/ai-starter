@@ -2,7 +2,7 @@
 # Mechanical check of ai/wiki/ without the model (0 tokens): pages missing from a catalog,
 # broken links (incl. catalog entries without a file), pages longer than 300 lines.
 root="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
-L=$(cat "$root/.claude/ai-starter-lang" 2>/dev/null || echo en)
+L=$(cat "$root/.claude/project-memory-lang" 2>/dev/null || cat "$root/.claude/ai-starter-lang" 2>/dev/null || echo en)
 if [ "$L" = ru ]; then
   T_NOWIKI="Нет папки ai/wiki/"; T_NOIDX="Нет в каталоге"; T_BROKEN="Битая ссылка в"; T_LONG="Длинная страница, стоит разбить"
   T_OK="wiki OK: страниц %s, механических проблем нет."; T_PAGES="Страниц: %s"; T_LINES="строк"

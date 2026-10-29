@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ai-starter installer — adds persistent project memory for Claude Code to a new or existing project.
+# claude-project-memory installer — adds persistent project memory for Claude Code to a new or existing project.
 #
 #   bash install.sh <project-folder> [--lang en|ru] [--update]
 #
@@ -29,25 +29,25 @@ done
 mkdir -p "$DST"; DST="$(cd "$DST" && pwd)"
 
 # Language: explicit flag > already installed > en
-L="${LANG_OPT:-$(cat "$DST/.claude/ai-starter-lang" 2>/dev/null || echo en)}"
+L="${LANG_OPT:-$(cat "$DST/.claude/project-memory-lang" 2>/dev/null || cat "$DST/.claude/ai-starter-lang" 2>/dev/null || echo en)}"
 case "$L" in en|ru) ;; *) echo "Unknown language: $L (use en or ru)"; exit 1;; esac
 SRC="$TPL/$L"; COM="$TPL/common"
 
 if [ "$L" = ru ]; then
-  T_HEAD="ai-starter → %s (язык: ru)"; T_AI_KEEP="ai/ уже есть — не трогаю"; T_AI_NEW="создана ai/ (цель, состояние, план, база знаний)"
+  T_HEAD="claude-project-memory → %s (язык: ru)"; T_AI_KEEP="ai/ уже есть — не трогаю"; T_AI_NEW="создана ai/ (цель, состояние, план, база знаний)"
   T_HOOKS="хуки и скрипты: .claude/hooks/, .claude/scripts/"; T_SK_UPD="навык /%s обновлён"
   T_SK_KEEP="навык /%s уже есть и отличается — оставил твой (обновить: --update)"; T_SK="навыки: .claude/skills/"
   T_SET_NEW="создан .claude/settings.json"; T_SET_MERGE="объединил с твоим .claude/settings.json (копия: settings.json.bak)"
-  T_SET_MANUAL="ВНИМАНИЕ: нет python — объедини вручную .claude/settings.ai-starter.json с .claude/settings.json"
-  T_CL_NEW="создан CLAUDE.md"; T_CL_OK="CLAUDE.md уже подключён"; T_CL_ADD="в твой CLAUDE.md дописан блок ai-starter (в конце)"
+  T_SET_MANUAL="ВНИМАНИЕ: нет python — объедини вручную .claude/settings.project-memory.json с .claude/settings.json"
+  T_CL_NEW="создан CLAUDE.md"; T_CL_OK="CLAUDE.md уже подключён"; T_CL_ADD="в твой CLAUDE.md дописан блок claude-project-memory (в конце)"
   T_GI=".gitignore дополнен"; T_DONE="Готово. Дальше:"; T_NEXT="затем набери  /kickoff"
 else
-  T_HEAD="ai-starter → %s (language: en)"; T_AI_KEEP="ai/ already exists — left untouched"; T_AI_NEW="created ai/ (goal, state, plan, knowledge base)"
+  T_HEAD="claude-project-memory → %s (language: en)"; T_AI_KEEP="ai/ already exists — left untouched"; T_AI_NEW="created ai/ (goal, state, plan, knowledge base)"
   T_HOOKS="hooks and scripts: .claude/hooks/, .claude/scripts/"; T_SK_UPD="skill /%s updated"
   T_SK_KEEP="skill /%s exists and differs — kept yours (to update: --update)"; T_SK="skills: .claude/skills/"
   T_SET_NEW="created .claude/settings.json"; T_SET_MERGE="merged into your .claude/settings.json (backup: settings.json.bak)"
-  T_SET_MANUAL="WARNING: no python — merge .claude/settings.ai-starter.json into .claude/settings.json by hand"
-  T_CL_NEW="created CLAUDE.md"; T_CL_OK="CLAUDE.md already wired up"; T_CL_ADD="appended the ai-starter block to your CLAUDE.md"
+  T_SET_MANUAL="WARNING: no python — merge .claude/settings.project-memory.json into .claude/settings.json by hand"
+  T_CL_NEW="created CLAUDE.md"; T_CL_OK="CLAUDE.md already wired up"; T_CL_ADD="appended the claude-project-memory block to your CLAUDE.md"
   T_GI=".gitignore updated"; T_DONE="Done. Next:"; T_NEXT="then type  /kickoff"
 fi
 say() { printf "  • $1\n" "${2:-}"; }
@@ -57,12 +57,12 @@ printf "$T_HEAD\n" "$DST"
 if [ -d "$DST/ai" ]; then say "$T_AI_KEEP"
 else cp -R "$SRC/ai" "$DST/ai"; mkdir -p "$DST/ai/sessions"; say "$T_AI_NEW"; fi
 
-# 2. Hooks and scripts — owned by ai-starter, always refreshed
+# 2. Hooks and scripts — owned by claude-project-memory, always refreshed
 mkdir -p "$DST/.claude/hooks" "$DST/.claude/scripts" "$DST/.claude/skills"
 cp "$COM/.claude/hooks/"*.sh "$DST/.claude/hooks/"
 cp "$COM/.claude/scripts/"*.sh "$DST/.claude/scripts/"
 chmod +x "$DST/.claude/hooks/"*.sh "$DST/.claude/scripts/"*.sh
-echo "$L" > "$DST/.claude/ai-starter-lang"
+echo "$L" > "$DST/.claude/project-memory-lang"; rm -f "$DST/.claude/ai-starter-lang"  # pre-rename name
 say "$T_HOOKS"
 
 # 3. Skills (/save, /kickoff …): yours are kept unless --update
@@ -103,16 +103,16 @@ with io.open(sys.argv[2], "w", encoding="utf-8") as f:
 PYEOF
   say "$T_SET_MERGE"
 else
-  cp "$COM/.claude/settings.json" "$DST/.claude/settings.ai-starter.json"; say "$T_SET_MANUAL"
+  cp "$COM/.claude/settings.json" "$DST/.claude/settings.project-memory.json"; say "$T_SET_MANUAL"
 fi
 
 # 5. Root CLAUDE.md: create, or append the import block
 if [ ! -f "$DST/CLAUDE.md" ]; then
   cp "$SRC/CLAUDE.md" "$DST/CLAUDE.md"; say "$T_CL_NEW"
-elif grep -q 'ai-starter: begin' "$DST/CLAUDE.md"; then
+elif grep -qE '(project-memory|ai-starter): begin' "$DST/CLAUDE.md"; then
   say "$T_CL_OK"
 else
-  { echo; sed -n '/ai-starter: begin/,/ai-starter: end/p' "$SRC/CLAUDE.md"; } >> "$DST/CLAUDE.md"; say "$T_CL_ADD"
+  { echo; sed -n '/project-memory: begin/,/project-memory: end/p' "$SRC/CLAUDE.md"; } >> "$DST/CLAUDE.md"; say "$T_CL_ADD"
 fi
 
 # 6. .gitignore

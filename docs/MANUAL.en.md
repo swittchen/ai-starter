@@ -1,9 +1,9 @@
-# ai-starter — the manual in plain words
+# claude-project-memory — the manual in plain words
 
 ## What it is, in two sentences
 
 Imagine Claude is a skilled builder who arrives at the site every morning **with total memory loss**.
-ai-starter is the **site logbook** kept right on the site: page one says **what we are building** (the goal), then **where we stopped yesterday** and **what to do today**, plus a **handbook** of everything learned so far.
+claude-project-memory is the **site logbook** kept right on the site: page one says **what we are building** (the goal), then **where we stopped yesterday** and **what to do today**, plus a **handbook** of everything learned so far.
 
 The builder reads the logbook first and carries on as if nothing was forgotten. The logbook is the `ai/` folder in your project. Claude reads it by itself — you paste nothing.
 
@@ -19,10 +19,10 @@ python3 --version
 A version number means it is installed; `command not found` means it is not.
 python is only needed in one case (step 4) and is optional. On Windows, use **Git Bash** (comes with Git for Windows) or WSL.
 
-## Step 2. Download ai-starter (once per computer)
+## Step 2. Download claude-project-memory (once per computer)
 
 ```bash
-git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
+git clone https://github.com/swittchen/claude-project-memory.git ~/tools/claude-project-memory
 ```
 `~` is your home folder. Any other location works too.
 
@@ -30,22 +30,22 @@ git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
 
 An **alias** is a shortcut for the terminal:
 ```bash
-echo "alias ai-starter='bash ~/tools/ai-starter/install.sh'" >> ~/.bashrc
+echo "alias project-memory='bash ~/tools/claude-project-memory/install.sh'" >> ~/.bashrc
 source ~/.bashrc
 ```
-The first line adds the shortcut to `~/.bashrc` (read by every new terminal); the second activates it now. On macOS with zsh use `~/.zshrc` instead. Check: `ai-starter --help`.
+The first line adds the shortcut to `~/.bashrc` (read by every new terminal); the second activates it now. On macOS with zsh use `~/.zshrc` instead. Check: `project-memory --help`.
 
 ## Step 4. Add it to a project
 
 **New project:**
 ```bash
-ai-starter ~/projects/my-project          # add --lang ru for Russian templates
+project-memory ~/projects/my-project          # add --lang ru for Russian templates
 cd ~/projects/my-project && git init
 ```
 **Existing project:**
 ```bash
 cd ~/projects/my-service
-ai-starter .
+project-memory .
 ```
 `.` means "this folder". Nothing of yours is overwritten: your `CLAUDE.md` gets 4 lines appended; your `.claude/settings.json` is merged (backup: `settings.json.bak` — this is where python is needed); your code is not touched.
 
@@ -114,7 +114,7 @@ Every session Claude reads only **goal, state and plan** — short files. Everyt
 
 ## For programmers
 - `ai/MAP.md` lists modules and packages, not every file.
-- Put build and test commands in the root `CLAUDE.md` below the ai-starter block (`/kickoff` offers to).
+- Put build and test commands in the root `CLAUDE.md` below the claude-project-memory block (`/kickoff` offers to).
 - "How to verify" = tests. A task is done when its test is green.
 - Module-specific rules can live in a `CLAUDE.md` inside that module's folder — Claude reads it only when working there.
 - Pitfalls like "this service returns dates without a time zone" belong in `ai/wiki/`.
@@ -138,6 +138,6 @@ Everything else is fine: write code, run tests, look at `git status` and `git di
 | Claude Code complains about a line in `settings.json` | delete that line — it may have been renamed in a newer Claude Code |
 | Asks for `/save` too often | raise `MINUTES=40` / `MAXFILES=15` in `.claude/hooks/stop-check.sh` |
 | I want to change the goal | `chmod u+w ai/GOAL.md` → edit → `chmod a-w ai/GOAL.md` |
-| New ai-starter version | `cd ~/tools/ai-starter && git pull`, then in the project `ai-starter . --update` (the logbook is untouched) |
+| New claude-project-memory version | `cd ~/tools/claude-project-memory && git pull`, then in the project `project-memory . --update` (the logbook is untouched) |
 | Claude reads lots of files in a row | stop it: "use MAP.md and search, don't read everything" |
 | The conversation got slow | `/save` → commit → `/clear` |

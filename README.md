@@ -1,9 +1,16 @@
-# ai-starter
+# claude-project-memory
+
+[![smoke-test](https://github.com/swittchen/claude-project-memory/actions/workflows/test.yml/badge.svg)](https://github.com/swittchen/claude-project-memory/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-hooks%20%2B%20skills-ff8a3d)
+![Platforms](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20WSL-lightgrey)
 
 **Persistent project memory for [Claude Code](https://docs.claude.com/en/docs/claude-code/overview).**
 Start a new session in your project folder — Claude already knows the goal, where you stopped and what to do next.
 
 [Русская версия → README.ru.md](README.ru.md)
+
+![Demo: Claude starts with goal, state and next step, works one task, /save suggests a commit](docs/img/demo.gif)
 
 ---
 
@@ -11,7 +18,7 @@ Start a new session in your project folder — Claude already knows the goal, wh
 
 Claude Code forgets everything between sessions. In long sessions it compacts the conversation and loses details. Over many small steps it drifts away from the original goal. And on a big project (a large codebase, a book) it is easy to burn your usage limit just by reading files.
 
-## What ai-starter does
+## What claude-project-memory does
 
 | Problem | Solution |
 |---|---|
@@ -24,16 +31,22 @@ Claude Code forgets everything between sessions. In long sessions it compacts th
 
 Works for **new and existing** projects: software (tested on a Spring Boot repo) and long texts such as books. Templates in **English and Russian**.
 
+## Why not just CLAUDE.md or auto-memory?
+
+- **CLAUDE.md** holds rules, not progress. Nobody keeps it updated after every task, so after a few sessions it no longer says where you are. Here `/save` rewrites `ai/STATE.md` and `ai/PLAN.md` at every checkpoint, and a hook refuses to finish while they lag behind.
+- **Auto-memory** decides on its own what to remember and stores it outside the repo. Here the memory is plain Markdown in your project, versioned with git, readable and editable by you — and the goal file is locked so Claude cannot quietly move the target.
+- **Compaction** summarises and forgets. Here the important state is already on disk before it happens, and the full transcript is backed up.
+
 ## Quick start
 
 ```bash
 # 1. Get it (once)
-git clone https://github.com/swittchen/ai-starter.git ~/tools/ai-starter
-echo "alias ai-starter='bash ~/tools/ai-starter/install.sh'" >> ~/.bashrc && source ~/.bashrc
+git clone https://github.com/swittchen/claude-project-memory.git ~/tools/claude-project-memory
+echo "alias project-memory='bash ~/tools/claude-project-memory/install.sh'" >> ~/.bashrc && source ~/.bashrc
 
 # 2. Add it to a project (new or existing — nothing of yours is overwritten)
-ai-starter ~/projects/my-project            # English template
-ai-starter ~/projects/my-project --lang ru  # Russian template
+project-memory ~/projects/my-project            # English template
+project-memory ~/projects/my-project --lang ru  # Russian template
 
 # 3. First session
 cd ~/projects/my-project && git init         # if it is not a git repo yet
@@ -104,7 +117,7 @@ your-project/
 
 ## Tested
 
-`bash tests/smoke.sh` — 35 checks of the installer and every hook, both languages, no tokens needed (also runs in CI).
+`bash tests/smoke.sh` — 38 checks of the installer and every hook, both languages, no tokens needed (also runs in CI).
 Manually verified in Claude Code 2.1.310 on Linux: auto-loading, anchor, skills, blocked edits of the goal (`Edit`, `echo >>`, `mv`, `cp`), blocked `git add/commit`, Stop hook forcing `/save`, compaction backup.
 
 ## Docs

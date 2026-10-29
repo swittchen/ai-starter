@@ -1,4 +1,4 @@
-<!-- ai-starter:unset — /kickoff replaces this file; do not remove this line by hand -->
+<!-- project-memory:unset — /kickoff replaces this file; do not remove this line by hand -->
 # PROJECT GOAL
 
 > Only the human edits this file. It is locked for Claude.
